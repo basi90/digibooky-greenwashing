@@ -44,6 +44,7 @@
             assertThat(result.get(1).getLastName()).isEqualTo("d");
         }
 
+        // Create custom exception
         @Test
         void givenId_whenGetById_thenReturnDTO() {
             Author author = new Author("a", "b");
@@ -93,6 +94,7 @@
             verify(authorRepository).delete(id);
         }
 
+        // Create custom exception
         @Test
         void givenInvalidId_whenDelete_thenReturnNull() {
             long id = 123;
