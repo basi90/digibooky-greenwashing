@@ -1,27 +1,31 @@
 package com.greenwashing.digibooky.service;
 
-import com.greenwashing.digibooky.domain.Rental;
 import com.greenwashing.digibooky.infrastructure.BookRepository;
+import com.greenwashing.digibooky.infrastructure.RentalRepository;
 import com.greenwashing.digibooky.infrastructure.UserRepository;
-import com.greenwashing.digibooky.service.DTOs.BookInputDTO;
 import com.greenwashing.digibooky.service.DTOs.RentalInputDTO;
 import com.greenwashing.digibooky.service.DTOs.RentalOutputDTO;
+import com.greenwashing.digibooky.service.mappers.RentalMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class RentalService {
+    private RentalMapper rentalMapper;
+    private RentalRepository rentalRepository;
     private UserRepository userRepository;
     private BookRepository bookRepository;
 
-    public RentalService(UserRepository userRepository, BookRepository bookRepository) {
+
+    public RentalService(RentalMapper rentalMapper, RentalRepository rentalRepository, UserRepository userRepository, BookRepository bookRepository) {
+        this.rentalMapper = rentalMapper;
+        this.rentalRepository = rentalRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
     }
 
     public RentalOutputDTO borrowBook(RentalInputDTO rentalInputDTO) {
-        //get user by isbn
         //get book by isbn
         //flip isRented boolean!!!
         //map input dto to rental object
