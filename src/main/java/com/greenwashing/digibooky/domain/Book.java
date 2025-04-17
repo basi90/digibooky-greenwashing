@@ -8,6 +8,7 @@ public class Book {
     private Author author;
     private String description;
     private String isbn;
+    private boolean isRented;
 
     private static long nextId = 1;
 
@@ -17,6 +18,7 @@ public class Book {
         this.author = author;
         this.description = description;
         this.isbn = isbn;
+        this.isRented = false;
     }
 
     public long getId() {
@@ -37,6 +39,14 @@ public class Book {
 
     public String getIsbn() {
         return isbn;
+    }
+
+    public boolean isRented() {
+        return isRented;
+    }
+
+    public void setRented(boolean rented) {
+        isRented = rented;
     }
 
     @Override
