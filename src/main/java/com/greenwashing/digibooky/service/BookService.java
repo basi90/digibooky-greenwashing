@@ -94,6 +94,8 @@ public class BookService {
     public void delete(long id) {
         // delete the matching book from repo with id
             // if not present, handle error with custom exception
+            // keep in mind the repo will actually only transfer it to the
+            // "deleted" list (soft-delete)
     }
 
 }
