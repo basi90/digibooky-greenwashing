@@ -20,10 +20,11 @@ public class RentalService {
         this.bookRepository = bookRepository;
     }
 
-    public RentalOutputDTO borrowBook(long userId, String isbn) {
+    public RentalOutputDTO borrowBook(RentalInputDTO rentalInputDTO) {
         //get user by isbn
+        //get book by isbn
         //flip isRented boolean!!!
-        //create a rental
+        //map input dto to rental object
         //save in repo
         //Map Rental to DOT
         //return RentalOutputDTO
@@ -37,6 +38,7 @@ public class RentalService {
         return null;
     }
 
+    //maybe this one should actually return a BookOutputDTO? --> when a rental is returned, you get info about the book you just returned
     public void returnBook(long rentalId) {
         //get the rental object and store in local var
         //delete rental from repo
