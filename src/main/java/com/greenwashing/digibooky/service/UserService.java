@@ -1,7 +1,9 @@
 package com.greenwashing.digibooky.service;
 
+import com.greenwashing.digibooky.infrastructure.UserRepository;
 import com.greenwashing.digibooky.service.DTOs.UserInputDTO;
 import com.greenwashing.digibooky.service.DTOs.UserOutputDTO;
+import com.greenwashing.digibooky.service.mappers.UserMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +11,13 @@ import java.util.List;
 @Service
 public class UserService {
 
-    public UserService() {}
+    private UserMapper userMapper;
+    private UserRepository userRepository;
+
+    public UserService(UserMapper userMapper, UserRepository userRepository) {
+        this.userMapper = userMapper;
+        this.userRepository = userRepository;
+    }
 
     public List<UserOutputDTO> viewMembersAsAdmin() {
         //IN CONTROLLER -> MAKE AUTHORISATION REQUEST
