@@ -20,7 +20,7 @@ public class BookMapper {
     }
 
     // METHODS
-    public BookOutputDTO bookToBookOutputDTO(Book book) {
+    public BookOutputDTO bookToOutputDTO(Book book) {
         return new BookOutputDTO(
                 book.getId(),
                 book.getTitle(),
@@ -30,7 +30,7 @@ public class BookMapper {
         );
     }
 
-    public Book bookInputDTOToBook(BookInputDTO DTO) {
+    public Book inputDTOToBook(BookInputDTO DTO) {
         return new Book(
                 DTO.getTitle(),
                 authorRepository.getById( DTO.getAuthorId()),
