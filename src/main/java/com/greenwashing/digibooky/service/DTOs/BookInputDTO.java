@@ -6,7 +6,7 @@ public class BookInputDTO {
     private String description;
     private String isbn;
 
-    public BookInputDTO(long id , String title, long authorId, String description, String isbn) {
+    public BookInputDTO(String title, long authorId, String description, String isbn) {
         this.title = title;
         this.authorId = authorId;
         this.description = description;

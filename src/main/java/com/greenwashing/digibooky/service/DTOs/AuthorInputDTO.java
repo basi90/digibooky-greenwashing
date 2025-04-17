@@ -4,7 +4,7 @@ public class AuthorInputDTO {
     private String firstName;
     private String lastName;
 
-    public AuthorInputDTO(long id, String firstName, String lastName) {
+    public AuthorInputDTO(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
