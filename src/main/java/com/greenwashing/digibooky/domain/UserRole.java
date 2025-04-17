@@ -2,7 +2,7 @@ package com.greenwashing.digibooky.domain;
 
 public enum UserRole {
     MEMBER("Member"),
-    LIBRARIANr("Librarian"),
+    LIBRARIAN("Librarian"),
     ADMIN("Admin");
 
     private final String roleValue;
