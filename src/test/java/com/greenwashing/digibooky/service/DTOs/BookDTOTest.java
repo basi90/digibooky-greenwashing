@@ -30,7 +30,7 @@ public class BookDTOTest {
                 }
                 """;
 
-        assertThat(inputJson.write(inputDTO)).isEqualTo(jsonString);
+        assertThat(inputJson.write(inputDTO)).isEqualToJson(jsonString);
     }
 
     @Test
@@ -52,6 +52,6 @@ public class BookDTOTest {
                 }
                 """;
 
-        assertThat(outputJson.write(outputDTO)).isEqualTo(jsonString);
+        assertThat(outputJson.write(outputDTO)).isEqualToJson(jsonString);
     }
 }

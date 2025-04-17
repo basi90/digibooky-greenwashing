@@ -36,7 +36,7 @@ public class UserDTOTest {
                 }
                 """;
 
-        assertThat(inputJson.write(inputDTO)).isEqualTo(jsonString);
+        assertThat(inputJson.write(inputDTO)).isEqualToJson(jsonString);
     }
 
     @Test
@@ -45,6 +45,7 @@ public class UserDTOTest {
 
         String jsonString = """
                 {
+                "id":1,
                 "role":"MEMBER",
                 "ssn":"a",
                 "email":"x@y.z",
@@ -57,6 +58,6 @@ public class UserDTOTest {
                 }
                 """;
 
-        assertThat(outputJson.write(outputDTO)).isEqualTo(jsonString);
+        assertThat(outputJson.write(outputDTO)).isEqualToJson(jsonString);
     }
 }
