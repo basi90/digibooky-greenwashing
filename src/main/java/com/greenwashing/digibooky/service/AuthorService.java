@@ -7,6 +7,8 @@ import com.greenwashing.digibooky.service.DTOs.AuthorOutputDTO;
 import com.greenwashing.digibooky.service.mappers.AuthorMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthorService {
 
