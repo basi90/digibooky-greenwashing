@@ -85,7 +85,9 @@ public class AuthorServiceTest {
         long id = author.getId();
 
         when(authorRepository.getById(id)).thenReturn(author);
+
         authorService.delete(id);
+
         verify(authorRepository).delete(id);
     }
 
@@ -94,7 +96,9 @@ public class AuthorServiceTest {
         long id = 123;
 
         when(authorRepository.getById(id)).thenReturn(null);
+
         authorService.delete(id);
+
         verify(authorRepository, never()).delete(id);
     }
 }
