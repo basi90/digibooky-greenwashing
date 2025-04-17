@@ -1,10 +1,12 @@
 package com.greenwashing.digibooky.infrastructure;
 
 import com.greenwashing.digibooky.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
 
+@Repository
 public class UserRepository {
 
     // FIELDS
