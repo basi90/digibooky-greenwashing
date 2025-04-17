@@ -1,7 +1,5 @@
 package com.greenwashing.digibooky.service.DTOs;
 
-import com.greenwashing.digibooky.domain.Author;
-
 public class BookInputDTO {
     private String title;
     private long authorId;
