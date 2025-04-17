@@ -1,17 +1,14 @@
 package com.greenwashing.digibooky.infrastructure;
 
 import com.greenwashing.digibooky.domain.Author;
-import com.greenwashing.digibooky.service.DTOs.AuthorOutputDTO;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 public class AuthorRepository {
 
     // FIELDS
-    HashMap<Long, Author> authors;
+    private HashMap<Long, Author> authors;
 
     // CONSTRUCTOR
     public AuthorRepository() {
