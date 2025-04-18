@@ -6,6 +6,8 @@ import com.greenwashing.digibooky.service.AuthenticationService;
 import com.greenwashing.digibooky.service.DTOs.UserInputDTO;
 import com.greenwashing.digibooky.service.DTOs.UserOutputDTO;
 import com.greenwashing.digibooky.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,6 +28,7 @@ public class UserController {
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all users", security = @SecurityRequirement(name = "basicAuth"))
     public List<UserOutputDTO> getAllUsers(@RequestHeader("Authorization") String authHeader) {
         authenticateAdmin(authHeader);
         return userService.viewMembersAsAdmin();
