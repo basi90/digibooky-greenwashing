@@ -18,6 +18,7 @@ public class User {
     private static long nextId = 1;
 
     public User(UserRole role, String ssn, String email, String lastName, String city, String password) {
+        this.id = nextId++;
         this.role = role;
         this.ssn = ssn;
         this.email = email;
