@@ -69,4 +69,5 @@ public class AuthenticationServiceTest {
             authenticationService.authenticate(badHeader);
         });
     }
+    
 }
