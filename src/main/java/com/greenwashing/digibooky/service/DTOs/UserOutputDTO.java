@@ -5,7 +5,6 @@ import com.greenwashing.digibooky.domain.UserRole;
 public class UserOutputDTO {
     private long id;
     private UserRole role;
-    private String ssn;
     private String email;
     private String firstName;
     private String lastName;
@@ -17,7 +16,6 @@ public class UserOutputDTO {
     public UserOutputDTO(long id, UserRole userRole, String ssn, String email, String firstName, String lastName, String streetName, int streetNumber, String city, String postalCode) {
         this.id = id;
         this.role = userRole;
-        this.ssn = ssn;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,10 +31,6 @@ public class UserOutputDTO {
 
     public UserRole getRole() {
         return role;
-    }
-
-    public String getSsn() {
-        return ssn;
     }
 
     public String getEmail() {

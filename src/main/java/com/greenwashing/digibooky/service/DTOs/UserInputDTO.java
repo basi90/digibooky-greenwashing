@@ -12,8 +12,9 @@ public class UserInputDTO {
     private int streetNumber;
     private String city;
     private String postalCode;
+    private String password;
 
-    public UserInputDTO(UserRole role, String ssn, String email, String firstName, String lastName, String streetName, int streetNumber, String city, String postalCode) {
+    public UserInputDTO(UserRole role, String ssn, String email, String firstName, String lastName, String streetName, int streetNumber, String city, String postalCode, String password) {
         this.role = role;
         this.ssn = ssn;
         this.email = email;
@@ -59,5 +60,9 @@ public class UserInputDTO {
 
     public String getPostalCode() {
         return postalCode;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

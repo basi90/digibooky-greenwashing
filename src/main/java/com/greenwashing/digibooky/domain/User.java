@@ -13,15 +13,17 @@ public class User {
     private int streetNumber;
     private String city;
     private String postalCode;
+    private String password;
 
     private static long nextId = 1;
 
-    public User(UserRole role, String ssn, String email, String lastName, String city) {
+    public User(UserRole role, String ssn, String email, String lastName, String city, String password) {
         this.role = role;
         this.ssn = ssn;
         this.email = email;
         this.lastName = lastName;
         this.city = city;
+        this.password = password;
     }
 
     public long getId() {
@@ -62,6 +64,10 @@ public class User {
 
     public String getPostalCode() {
         return postalCode;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override
