@@ -12,6 +12,7 @@ public class Rental {
     private static long nextId = 1;
 
     public Rental(User user, Book book, LocalDate returnDate) {
+        this.id = nextId++;
         this.user = user;
         this.book = book;
         this.returnDate = returnDate;
