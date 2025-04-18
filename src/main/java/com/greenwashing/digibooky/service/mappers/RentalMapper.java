@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RentalMapper {
-    UserRepository userRepository;
-    BookRepository bookRepository;
-    UserMapper userMapper;
-    BookMapper bookMapper;
+    private UserRepository userRepository;
+    private BookRepository bookRepository;
+    private UserMapper userMapper;
+    private BookMapper bookMapper;
 
     @Autowired
     public  RentalMapper (UserRepository userRepository, BookRepository bookRepository, UserMapper userMapper, BookMapper bookMapper) {
