@@ -24,7 +24,7 @@ public class AuthorService {
 
     // METHODS
     // get all
-    public List<Author> getAll() {
+    public List<AuthorOutputDTO> getAll() {
         // get all authors from the repository
         // map it to a list of dto
         // return the list of dto
@@ -55,7 +55,7 @@ public class AuthorService {
         // if not present, handle error with custom exception
     }
 
-    // add
+    // add // do we actually need this method?
     public AuthorOutputDTO add(long id) {
         // map the input dto to an actual author
         // save it in the repository

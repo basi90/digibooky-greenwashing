@@ -6,7 +6,7 @@ public class AuthorOutputDTO {
     private String lastName;
     private boolean isRented;
 
-    public AuthorOutputDTO(long id, String firstName, String lastName, boolean isRented) {
+    public AuthorOutputDTO(long id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
