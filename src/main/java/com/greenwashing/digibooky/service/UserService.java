@@ -1,5 +1,7 @@
 package com.greenwashing.digibooky.service;
 
+import com.greenwashing.digibooky.domain.User;
+import com.greenwashing.digibooky.domain.UserRole;
 import com.greenwashing.digibooky.infrastructure.UserRepository;
 import com.greenwashing.digibooky.service.DTOs.UserInputDTO;
 import com.greenwashing.digibooky.service.DTOs.UserOutputDTO;
@@ -20,39 +22,44 @@ public class UserService {
     }
 
     public List<UserOutputDTO> viewMembersAsAdmin() {
-        //IN CONTROLLER -> MAKE AUTHORISATION REQUEST
-        //get all users from repo
-        //map to userOutputDTO
-        //collest and return list
-        return null;
+        return userRepository.getAll()
+                .stream()
+                .map(user->userMapper.userToOutputDTO(user))
+                .toList();
     }
 
     public UserOutputDTO registerAsMember(UserInputDTO memberAccountDetails) {
-        //map userInputDTO to user !!!!ROLE MUST BE MEMBER!!!! if not --> exception! --> getter in inputdto that returns member ?
-        //save that user to the repo
-        //map the user to dto
-        //return the mapped userOutputDTO
-        return null;
+        if(!memberAccountDetails.getRole().equals(UserRole.MEMBER)) {
+            throw new IllegalArgumentException("The payload role should be MEMBER");
+        }
+        //replace if statement with validation later (if time permits)
+        User newMember = userMapper.inputDTOtoUser(memberAccountDetails);
+        userRepository.save(newMember);
+        return userMapper.userToOutputDTO(newMember);
     }
 
     public UserOutputDTO registerLibrarian(UserInputDTO librarianAccountDetails) {
-        //IN CONTROLLER -> MAKE AUTHORISATION REQUEST
-        //map userInputDTO to user !!!!ROLE MUST BE LIBRARIAN!!!! if not --> exception! --> getter in inputdto that returns librarian ?
-        //save that user to the repo
-        //map the user to dto
-        //return the mapped userOutputDTO
-        return null;
+        if(!librarianAccountDetails.getRole().equals(UserRole.LIBRARIAN)) {
+            throw new IllegalArgumentException("The payload role should be LIBRARIAN");
+        }
+        //replace if statement with validation later (if time permits)
+        User newMember = userMapper.inputDTOtoUser(librarianAccountDetails);
+        userRepository.save(newMember);
+        return userMapper.userToOutputDTO(newMember);
     }
 
     //this one is nice to have not must-have
     public UserOutputDTO registerAdmin(UserInputDTO adminAccountDetails) {
-        //IN CONTROLLER -> MAKE AUTHORISATION REQUEST
-        //map userInputDTO to user !!!!ROLE MUST BE ADMIN!!!! if not --> exception! --> getter in inputdto that returns admin ?
-        //save that user to the repo
-        //map the user to dto
-        //return the mapped userOutputDTO
-        return null;
+        if(!adminAccountDetails.getRole().equals(UserRole.ADMIN)) {
+            throw new IllegalArgumentException("The payload role should be ADMIN");
+        }
+        //replace if statement with validation later (if time permits)
+        User newMember = userMapper.inputDTOtoUser(adminAccountDetails);
+        userRepository.save(newMember);
+        return userMapper.userToOutputDTO(newMember);
     }
+
+
 
 
 
