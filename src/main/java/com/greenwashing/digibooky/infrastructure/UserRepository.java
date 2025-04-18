@@ -1,6 +1,7 @@
 package com.greenwashing.digibooky.infrastructure;
 
 import com.greenwashing.digibooky.domain.User;
+import com.greenwashing.digibooky.domain.UserRole;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -15,6 +16,20 @@ public class UserRepository {
     // CONSTRUCTOR
     public UserRepository() {
         users = new HashMap<>();
+
+        User admin =  new User(
+                UserRole.ADMIN,
+                "ssnadmin",
+                "admin@admin.com",
+                "admin",
+                "admin",
+                "street",
+                1,
+                "Brussels",
+                "1040",
+                "admin"
+        );
+        users.put(admin.getId(), admin);
     }
 
     // METHODS
@@ -35,6 +50,9 @@ public class UserRepository {
     }
 
     public User getByEmail(String email) {
-        return users.get(email);
+        return users.values().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst()
+                .orElse(null);
     }
 }
