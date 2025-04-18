@@ -52,7 +52,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void givenWrongUSer_whenAuthenticate_thenThrowError() {
+    void givenWrongUser_whenAuthenticate_thenThrowError() {
         when(userRepository.getByEmail("wrong@email.com")).thenReturn(null);
         String encoded = authenticationService.encode("wrong@email.com", "who needs it?");
 
@@ -62,7 +62,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void authenticate_shouldThrow_whenHeaderIsMalformed() {
+    void givenBadHeader_whenAuthenticate_thenThrowError() {
         String badHeader = "NotBasic base64";
 
         assertThrows(ResponseStatusException.class, () -> {
