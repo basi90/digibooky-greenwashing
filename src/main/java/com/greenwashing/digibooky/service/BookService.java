@@ -1,9 +1,12 @@
 package com.greenwashing.digibooky.service;
 
 import com.greenwashing.digibooky.domain.Book;
+import com.greenwashing.digibooky.infrastructure.AuthorRepository;
 import com.greenwashing.digibooky.infrastructure.BookRepository;
+import com.greenwashing.digibooky.service.DTOs.BookEnhancedDTO;
 import com.greenwashing.digibooky.service.DTOs.BookInputDTO;
 import com.greenwashing.digibooky.service.DTOs.BookOutputDTO;
+import com.greenwashing.digibooky.service.mappers.AuthorMapper;
 import com.greenwashing.digibooky.service.mappers.BookMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,8 @@ public class BookService {
     // FIELDS
     private BookRepository repository;
     private BookMapper mapper;
+    private AuthorMapper authorMapper;
+    private AuthorRepository authorRepository;
 
     // CONSTRUCTOR
     public BookService(BookRepository repository, BookMapper mapper) {
@@ -79,22 +84,28 @@ public class BookService {
         return mapper.bookToOutputDTO(book);
     }
     // update a book
-    public BookOutputDTO update(BookInputDTO dto) {
+    public BookOutputDTO update(BookEnhancedDTO dto, long id) {
+        Book book = repository.getById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        book.setId(dto.getId());
+        book.setAuthor(authorRepository.getById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("Author not found")));
+        book.setTitle(dto.getTitle());
+        book.setDescription(dto.getDescription());
+        book.setIsbn(dto.getIsbn());
+        book.setRented(dto.isRented());
         // map the input dto to an actual book
         // save it in the repository
         // map the saved book to an output dto
         // return the dto
-        return null;
+        return mapper.bookToOutputDTO(book);
     }
+
     // delete a book
     public void delete(long id) {
         if (!repository.delete(id)) {;
             throw new RuntimeException("Book not found");
         }
-        // delete the matching book from repo with id
-            // if not present, handle error with custom exception
-            // keep in mind the repo will actually only transfer it to the
-            // "deleted" list (soft-delete)
     }
 
 }
