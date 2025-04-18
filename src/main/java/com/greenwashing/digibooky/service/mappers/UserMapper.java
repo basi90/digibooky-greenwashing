@@ -14,7 +14,8 @@ public class UserMapper {
                 userInputDTO.getSsn(),
                 userInputDTO.getEmail(),
                 userInputDTO.getLastName(),
-                userInputDTO.getCity());
+                userInputDTO.getCity(),
+                userInputDTO.getPassword());
     }
 
     public UserOutputDTO userToOutputDTO(User user) {
