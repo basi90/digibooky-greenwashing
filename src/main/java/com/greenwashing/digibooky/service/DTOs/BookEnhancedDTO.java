@@ -20,4 +20,32 @@ public class BookEnhancedDTO {
         this.description = description;
         this.isbn = isbn;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public AuthorOutputDTO getAuthor() {
+        return author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public boolean isRented() {
+        return isRented;
+    }
+
+    public UserOutputDTO getUser() {
+        return user;
+    }
 }
