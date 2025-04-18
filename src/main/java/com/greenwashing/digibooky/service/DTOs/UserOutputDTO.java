@@ -60,4 +60,14 @@ public class UserOutputDTO {
     public String getPostalCode() {
         return postalCode;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserOutputDTO that = (UserOutputDTO) o;
+        return id == that.id && role == that.role && email.equals(that.email) && firstName.equals(that.firstName)
+                && lastName.equals(that.lastName) && streetName.equals(that.streetName) && streetNumber == that.streetNumber
+                && city.equals(that.city) && postalCode.equals(that.postalCode);
+    }
 }
