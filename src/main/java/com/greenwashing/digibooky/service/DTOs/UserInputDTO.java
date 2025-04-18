@@ -24,6 +24,7 @@ public class UserInputDTO {
         this.streetNumber = streetNumber;
         this.city = city;
         this.postalCode = postalCode;
+        this.password = password;
     }
 
     public UserRole getRole() {
