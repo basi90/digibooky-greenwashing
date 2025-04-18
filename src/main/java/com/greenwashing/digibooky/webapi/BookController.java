@@ -2,6 +2,7 @@ package com.greenwashing.digibooky.webapi;
 
 import com.greenwashing.digibooky.domain.Book;
 import com.greenwashing.digibooky.service.BookService;
+import com.greenwashing.digibooky.service.DTOs.BookEnhancedDTO;
 import com.greenwashing.digibooky.service.DTOs.BookInputDTO;
 import com.greenwashing.digibooky.service.DTOs.BookOutputDTO;
 import org.springframework.http.HttpStatus;
@@ -42,9 +43,14 @@ public class BookController {
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public BookOutputDTO updateBook(@PathVariable long id, @RequestBody BookInputDTO book) {
-        return service.update(id, book);
+    public BookOutputDTO updateBook(@PathVariable long id, @RequestBody BookEnhancedDTO book) {
+        return service.update(book, id);
     }
 
+    @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBook(@PathVariable long id) {
+        service.delete(id);
+    }
 
 }

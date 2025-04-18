@@ -87,6 +87,7 @@ public class BookService {
     public BookOutputDTO update(BookEnhancedDTO dto, long id) {
         Book book = repository.getById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
+
         book.setId(dto.getId());
         book.setAuthor(authorRepository.getById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("Author not found")));
@@ -94,10 +95,7 @@ public class BookService {
         book.setDescription(dto.getDescription());
         book.setIsbn(dto.getIsbn());
         book.setRented(dto.isRented());
-        // map the input dto to an actual book
-        // save it in the repository
-        // map the saved book to an output dto
-        // return the dto
+
         return mapper.bookToOutputDTO(book);
     }
 
