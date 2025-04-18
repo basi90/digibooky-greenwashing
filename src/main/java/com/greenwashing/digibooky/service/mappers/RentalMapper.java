@@ -24,8 +24,10 @@ public class RentalMapper {
     }
 
     public Rental inputDTOToRental(RentalInputDTO rentalInputDTO) {
-        return new Rental(this.userRepository.getById(rentalInputDTO.getUserId()),
-                this.bookRepository.getById(rentalInputDTO.getBookId()),
+        return new Rental(this.userRepository.getById(
+                rentalInputDTO.getUserId()),
+                this.bookRepository.getById(rentalInputDTO.getBookId())
+                    .orElseThrow(() -> new RuntimeException("Book not found")),
                 rentalInputDTO.getReturnDate());
     }
 

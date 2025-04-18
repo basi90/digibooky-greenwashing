@@ -8,6 +8,7 @@ import com.greenwashing.digibooky.service.mappers.AuthorMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
@@ -25,42 +26,29 @@ public class AuthorService {
     // METHODS
     // get all
     public List<AuthorOutputDTO> getAll() {
-        // get all authors from the repository
-        // map it to a list of dto
-        // return the list of dto
-        return null;
+        return repository.getAll().stream()
+                .map(mapper::authorToOutputDTO)
+                .collect(Collectors.toList());
     }
 
     // get by id
     public AuthorOutputDTO getById(long id) {
-        // get the author matching the id from repo
-            // if not present, handle error with custom exception
-        // map the author to a dto
-        // return the dto
-        return null;
+        Author author = repository.getById(id)
+                .orElseThrow(() -> new RuntimeException("Author not found"));
+        return mapper.authorToOutputDTO(author);
     }
 
     // update
     public AuthorOutputDTO save(AuthorInputDTO dto) {
-        // map the input dto to an actual author
-        // save it in the repository
-        // map the saved author to an output dto
-        // return the dto
-        return null;
+        Author author = mapper.inputDTOToAuthor(dto);
+        repository.save(author);
+        return mapper.authorToOutputDTO(author);
     }
 
     // delete
     public void delete(long id) {
-        // delete the matching book from repo with id
-        // if not present, handle error with custom exception
-    }
-
-    // add // do we actually need this method?
-    public AuthorOutputDTO add(long id) {
-        // map the input dto to an actual author
-        // save it in the repository
-        // map the saved author to an output dto
-        // return the dto
-        return null;
+        if (!repository.delete(id)) {
+            throw new RuntimeException("Author not found");
+        }
     }
 }

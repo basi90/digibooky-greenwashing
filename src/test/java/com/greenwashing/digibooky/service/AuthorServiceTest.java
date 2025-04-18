@@ -1,6 +1,6 @@
-    package com.greenwashing.digibooky.service;
+package com.greenwashing.digibooky.service;
 
-    import com.greenwashing.digibooky.domain.Author;
+import com.greenwashing.digibooky.domain.Author;
     import com.greenwashing.digibooky.infrastructure.AuthorRepository;
     import com.greenwashing.digibooky.service.DTOs.AuthorInputDTO;
     import com.greenwashing.digibooky.service.DTOs.AuthorOutputDTO;
@@ -10,10 +10,14 @@
     import org.mockito.InjectMocks;
     import org.mockito.Mock;
     import org.mockito.junit.jupiter.MockitoExtension;
+    import org.springframework.web.server.ResponseStatusException;
 
     import java.util.List;
+    import java.util.Optional;
 
     import static org.assertj.core.api.Assertions.assertThat;
+    import static org.assertj.core.api.Assertions.assertThatRuntimeException;
+    import static org.junit.jupiter.api.Assertions.assertThrows;
     import static org.mockito.Mockito.*;
 
     @ExtendWith(MockitoExtension.class)
@@ -49,21 +53,23 @@
         void givenId_whenGetById_thenReturnDTO() {
             Author author = new Author("a", "b");
 
-            when(authorRepository.getById(1)).thenReturn(author);
+            when(authorRepository.getById(1)).thenReturn(Optional.of(author));
             when(authorMapper.authorToOutputDTO(author)).thenReturn(new AuthorOutputDTO(1, "a", "b"));
 
             AuthorOutputDTO result = authorService.getById(1);
 
-            assertThat(result).isEqualTo(new AuthorOutputDTO(1, "a", "b"));
+            assertThat(result.getId()).isEqualTo(1);
+            assertThat(result.getFirstName()).isEqualTo("a");
+            assertThat(result.getLastName()).isEqualTo("b");
+
         }
 
         @Test
-        void givenWrongId_whenGetById_thenReturnNull() {
-            when(authorRepository.getById(1)).thenReturn(null);
+        void givenWrongId_whenGetById_thenThrowException() {
+            when(authorRepository.getById(1)).thenReturn(Optional.empty());
 
-            AuthorOutputDTO result = authorService.getById(1);
-
-            assertThat(result).isNull();
+            assertThrows(RuntimeException.class, () -> {
+                authorService.getById(1);});
         }
 
         @Test
@@ -87,22 +93,17 @@
             Author author = new Author("a", "b");
             long id = author.getId();
 
-            when(authorRepository.getById(id)).thenReturn(author);
-
+            when(authorRepository.delete(id)).thenReturn(true);
             authorService.delete(id);
-
-            verify(authorRepository).delete(id);
         }
 
         // Create custom exception
         @Test
-        void givenInvalidId_whenDelete_thenReturnNull() {
-            long id = 123;
-
-            when(authorRepository.getById(id)).thenReturn(null);
-
-            authorService.delete(id);
-
-            verify(authorRepository, never()).delete(id);
+        void givenInvalidId_whenDelete_thenThrowException() {
+            long id = -1;
+            when(authorRepository.delete(id)).thenReturn(false);
+            assertThrows(RuntimeException.class, () -> {
+                authorService.delete(id);
+            });
         }
     }

@@ -1,5 +1,6 @@
 package com.greenwashing.digibooky.service;
 
+import com.greenwashing.digibooky.domain.Book;
 import com.greenwashing.digibooky.infrastructure.BookRepository;
 import com.greenwashing.digibooky.service.DTOs.BookInputDTO;
 import com.greenwashing.digibooky.service.DTOs.BookOutputDTO;
@@ -24,19 +25,16 @@ public class BookService {
     // METHODS
     // get all books
     public List<BookOutputDTO> getAll() {
-        // get all books from the repository
-        // map it to a list of dto
-        // return the list of dto
-        return null;
+        return repository.getAll().stream()
+                .map(mapper::bookToOutputDTO)
+                .toList();
     }
 
     // get book by ID
     public BookOutputDTO getById(long id) {
-        // get the book matching the id from repo
-            // if not present, handle error with custom exception
-        // map the book to a dto
-        // return the dto
-        return null;
+        Book book = repository.getById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        return mapper.bookToOutputDTO(book);
     }
 
     // get book by ID (enhanced)
@@ -76,11 +74,9 @@ public class BookService {
     }
     // add new book
     public BookOutputDTO save(BookInputDTO dto) {
-        // map the input dto to an actual book
-        // save it in the repository
-        // map the saved book to an output dto
-        // return the dto
-        return null;
+        Book book = mapper.inputDTOToBook(dto);
+        repository.save(book);
+        return mapper.bookToOutputDTO(book);
     }
     // update a book
     public BookOutputDTO update(BookInputDTO dto) {
@@ -92,6 +88,9 @@ public class BookService {
     }
     // delete a book
     public void delete(long id) {
+        if (!repository.delete(id)) {;
+            throw new RuntimeException("Book not found");
+        }
         // delete the matching book from repo with id
             // if not present, handle error with custom exception
             // keep in mind the repo will actually only transfer it to the

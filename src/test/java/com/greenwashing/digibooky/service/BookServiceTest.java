@@ -16,8 +16,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,7 +68,7 @@ public class BookServiceTest {
 
     // Create custom exception
     @Test
-    void givenId_whenGetBookById_ThenReturnBook() {
+    void givenId_whenGetBookById_ThenReturnDTO() {
         Author author = new Author("a", "b");
         Book book = new Book("a", author, "description", "isbn");
         long id = book.getId();
@@ -82,7 +84,7 @@ public class BookServiceTest {
                 "isbn"
         );
 
-        when(bookRepository.getById(id)).thenReturn(book);
+        when(bookRepository.getById(id)).thenReturn(Optional.of(book));
         when(bookMapper.bookToOutputDTO(book)).thenReturn(bookOutputDTO);
 
         BookOutputDTO result = bookService.getById(id);
@@ -121,23 +123,15 @@ public class BookServiceTest {
         Book book = new Book("a", author, "description", "isbn");
         long id = book.getId();
 
-        when(bookRepository.getById(id)).thenReturn(book);
-
         bookService.delete(id);
-
         verify(bookRepository).delete(id);
     }
 
     // Create custom exception
     @Test
     void givenInvalidId_whenDeleteBook_thenThrowException() {
-        long invalidId = 42;
-
-        when(bookRepository.getById(invalidId)).thenReturn(null);
-
-        bookService.delete(invalidId);
-
-        verify(bookRepository, never()).delete(invalidId);
+        assertThrows(RuntimeException.class, () -> {
+            bookService.delete(-1);
+        });
     }
-
 }

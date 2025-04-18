@@ -33,7 +33,8 @@ public class BookMapper {
     public Book inputDTOToBook(BookInputDTO DTO) {
         return new Book(
                 DTO.getTitle(),
-                authorRepository.getById( DTO.getAuthorId()),
+                authorRepository.getById( DTO.getAuthorId())
+                        .orElseThrow(() -> new RuntimeException("Author not found")),
                 DTO.getDescription(),
                 DTO.getIsbn()
         );

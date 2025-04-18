@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Repository
 public class BookRepository {
@@ -24,13 +25,17 @@ public class BookRepository {
         books.put(book.getId(), book);
     }
 
-    public void delete(long id) {
+    public boolean delete(long id) {
+        if (!books.containsKey(id)) {
+            return false;
+        }
         deleted.put(id, books.get(id));
         books.remove(id);
+        return true;
     }
 
-    public Book getById(long id) {
-        return books.get(id);
+    public Optional<Book> getById(long id) {
+        return Optional.ofNullable(books.get(id));
     }
 
     public Collection<Book> getAll() {
