@@ -13,9 +13,14 @@ public class UserMapper {
         return new User(userInputDTO.getRole(),
                 userInputDTO.getSsn(),
                 userInputDTO.getEmail(),
+                userInputDTO.getFirstName(),
                 userInputDTO.getLastName(),
+                userInputDTO.getStreetName(),
+                userInputDTO.getStreetNumber(),
                 userInputDTO.getCity(),
+                userInputDTO.getPostalCode(),
                 userInputDTO.getPassword());
+
     }
 
     public UserOutputDTO userToOutputDTO(User user) {
