@@ -27,6 +27,20 @@ public class User {
         this.password = password;
     }
 
+    public User(UserRole role, String ssn, String email, String firstName, String lastName, String streetName, int streetNumber, String city, String postalCode, String password) {
+        this.id = nextId++;
+        this.role = role;
+        this.ssn = ssn;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.streetName = streetName;
+        this.streetNumber = streetNumber;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.password = password;
+    }
+
     public long getId() {
         return id;
     }

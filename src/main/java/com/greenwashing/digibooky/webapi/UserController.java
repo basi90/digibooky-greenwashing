@@ -3,6 +3,7 @@ package com.greenwashing.digibooky.webapi;
 import com.greenwashing.digibooky.domain.User;
 import com.greenwashing.digibooky.domain.UserRole;
 import com.greenwashing.digibooky.service.AuthenticationService;
+import com.greenwashing.digibooky.service.DTOs.UserInputDTO;
 import com.greenwashing.digibooky.service.DTOs.UserOutputDTO;
 import com.greenwashing.digibooky.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,17 +26,45 @@ public class UserController {
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserOutputDTO> getAllUsers(@RequestHeader("Authorisation") String authHeader) {
-        User admin = authenticateAdmin(authHeader);
+    public List<UserOutputDTO> getAllUsers(@RequestHeader("Authorization") String authHeader) {
+        authenticateAdmin(authHeader);
         return userService.viewMembersAsAdmin();
     }
 
-    private User authenticateAdmin(String authHeader) {
+
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserOutputDTO registerUser(@RequestBody UserInputDTO userDTO, @RequestHeader(value = "Authorization", required = false) String authHeader) {
+
+        UserRole requestedRole = userDTO.getRole();
+
+        return switch (requestedRole) {
+            case MEMBER -> registerMember(userDTO);
+            case LIBRARIAN -> registerLibrarian(userDTO, authHeader);
+            case ADMIN -> registerAdmin(userDTO, authHeader);
+            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role");
+        };
+    }
+
+    private void authenticateAdmin(String authHeader) {
         User user = authService.authenticate(authHeader);
         if(user.getRole() != UserRole.ADMIN) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Admin privileges required");
         }
 
-        return user;
+    }
+
+    private UserOutputDTO registerMember(UserInputDTO dto) {
+        return userService.registerAsMember(dto);
+    }
+
+    private UserOutputDTO registerLibrarian(UserInputDTO dto, String authHeader) {
+        authenticateAdmin(authHeader);
+        return userService.registerLibrarian(dto);
+    }
+
+    private UserOutputDTO registerAdmin(UserInputDTO dto, String authHeader) {
+        authenticateAdmin(authHeader);
+        return userService.registerAdmin(dto);
     }
 }
