@@ -33,4 +33,8 @@ public class UserRepository {
     public Collection<User> getAll() {
         return users.values();
     }
+
+    public User getByEmail(String email) {
+        return users.get(email);
+    }
 }
