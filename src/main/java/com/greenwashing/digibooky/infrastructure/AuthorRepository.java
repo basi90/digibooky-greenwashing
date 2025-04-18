@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Repository
 public class AuthorRepository {
@@ -22,12 +23,12 @@ public class AuthorRepository {
         authors.put(author.getId(), author);
     }
 
-    public void delete(long id) {
-        authors.remove(id);
+    public boolean delete(long id) {
+        return authors.remove(id) != null;
     }
 
-    public Author getById(long id) {
-        return authors.get(id);
+    public Optional<Author> getById(long id) {
+        return Optional.ofNullable(authors.get(id));
     }
 
     public Collection<Author> getAll() {
