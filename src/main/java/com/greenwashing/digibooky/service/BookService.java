@@ -1,9 +1,12 @@
 package com.greenwashing.digibooky.service;
 
 import com.greenwashing.digibooky.domain.Book;
+import com.greenwashing.digibooky.infrastructure.AuthorRepository;
 import com.greenwashing.digibooky.infrastructure.BookRepository;
+import com.greenwashing.digibooky.service.DTOs.BookEnhancedDTO;
 import com.greenwashing.digibooky.service.DTOs.BookInputDTO;
 import com.greenwashing.digibooky.service.DTOs.BookOutputDTO;
+import com.greenwashing.digibooky.service.mappers.AuthorMapper;
 import com.greenwashing.digibooky.service.mappers.BookMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +18,15 @@ public class BookService {
     // FIELDS
     private BookRepository repository;
     private BookMapper mapper;
+    private AuthorMapper authorMapper;
+    private AuthorRepository authorRepository;
 
     // CONSTRUCTOR
-    public BookService(BookRepository repository, BookMapper mapper) {
+    public BookService(BookRepository repository, BookMapper mapper, AuthorRepository authorRepository, AuthorMapper authorMapper) {
         this.repository = repository;
         this.mapper = mapper;
+        this.authorMapper = authorMapper;
+        this.authorRepository = authorRepository;
     }
 
     // METHODS
@@ -79,22 +86,23 @@ public class BookService {
         return mapper.bookToOutputDTO(book);
     }
     // update a book
-    public BookOutputDTO update(BookInputDTO dto) {
-        // map the input dto to an actual book
-        // save it in the repository
-        // map the saved book to an output dto
-        // return the dto
-        return null;
+    public BookOutputDTO update(BookInputDTO dto, long id) {
+        Book book = repository.getById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        book.setAuthor(authorRepository.getById(dto.getAuthorId())
+                .orElseThrow(() -> new RuntimeException("Author not found")));
+        book.setTitle(dto.getTitle());
+        book.setDescription(dto.getDescription());
+
+        return mapper.bookToOutputDTO(book);
     }
+
     // delete a book
     public void delete(long id) {
         if (!repository.delete(id)) {;
             throw new RuntimeException("Book not found");
         }
-        // delete the matching book from repo with id
-            // if not present, handle error with custom exception
-            // keep in mind the repo will actually only transfer it to the
-            // "deleted" list (soft-delete)
     }
 
 }

@@ -16,6 +16,7 @@ public class AuthorRepository {
     // CONSTRUCTOR
     public AuthorRepository() {
         authors = new HashMap<>();
+        populateAuthors();
     }
 
     // METHODS
@@ -33,5 +34,17 @@ public class AuthorRepository {
 
     public Collection<Author> getAll() {
         return authors.values();
+    }
+
+
+    // FILLER
+    private void populateAuthors () {
+        Author author1 = new Author("Lao", "Tse");
+        Author author2 = new Author("Miyamoto", "Musashi");
+        Author author3 = new Author("Ikkyu", "Sojun");
+
+        authors.put(author1.getId(), author1);
+        authors.put(author2.getId(), author2);
+        authors.put(author3.getId(), author3);
     }
 }

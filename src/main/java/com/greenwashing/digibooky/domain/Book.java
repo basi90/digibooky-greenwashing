@@ -24,30 +24,42 @@ public class Book {
     public long getId() {
         return id;
     }
-
     public String getTitle() {
         return title;
     }
-
     public Author getAuthor() {
         return author;
     }
-
     public String getDescription() {
         return description;
     }
-
     public String getIsbn() {
         return isbn;
     }
-
     public boolean isRented() {
         return isRented;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
     public void setRented(boolean rented) {
         isRented = rented;
     }
+
+
 
     @Override
     public String toString() {

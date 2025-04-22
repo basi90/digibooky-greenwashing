@@ -1,4 +1,56 @@
 package com.greenwashing.digibooky.webapi;
 
+import com.greenwashing.digibooky.domain.Book;
+import com.greenwashing.digibooky.service.BookService;
+import com.greenwashing.digibooky.service.DTOs.BookEnhancedDTO;
+import com.greenwashing.digibooky.service.DTOs.BookInputDTO;
+import com.greenwashing.digibooky.service.DTOs.BookOutputDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/books")
 public class BookController {
+
+    // FIELDS
+    private final BookService service;
+
+    // CONSTRUCTOR
+    public BookController(BookService service) {
+        this.service = service;
+    }
+
+    // METHODS
+    @GetMapping(produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookOutputDTO> getAllBooks() {
+        return service.getAll();
+    }
+
+    @GetMapping(path = "/{id}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public BookOutputDTO getBookById(@PathVariable long id) {
+        return service.getById(id);
+    }
+
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookOutputDTO createBook(@RequestBody BookInputDTO book) {
+        return service.save(book);
+    }
+
+    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public BookOutputDTO updateBook(@PathVariable long id, @RequestBody BookInputDTO book) {
+        return service.update(book, id);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBook(@PathVariable long id) {
+        service.delete(id);
+    }
+
 }
