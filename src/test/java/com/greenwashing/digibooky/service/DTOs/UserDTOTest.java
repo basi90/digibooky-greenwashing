@@ -32,7 +32,7 @@ public class UserDTOTest {
                 "streetName":"e",
                 "streetNumber":1,
                 "city":"Brussels",
-                "postalCode":"f"
+                "postalCode":"f",
                 "password":"g"
                 }
                 """;
@@ -42,13 +42,12 @@ public class UserDTOTest {
 
     @Test
     void testSerializeOutputDTO() throws IOException {
-        UserOutputDTO outputDTO = new UserOutputDTO(1,UserRole.MEMBER, "a", "x@y.z", "c", "d", "e", 1, "Brussels", "f");
+        UserOutputDTO outputDTO = new UserOutputDTO(1,UserRole.MEMBER, "x@y.z", "c", "d", "e", 1, "Brussels", "f");
 
         String jsonString = """
                 {
                 "id":1,
                 "role":"MEMBER",
-                "ssn":"a",
                 "email":"x@y.z",
                 "firstName":"c",
                 "lastName":"d",

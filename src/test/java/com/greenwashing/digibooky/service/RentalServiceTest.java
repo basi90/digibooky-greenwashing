@@ -48,7 +48,11 @@ public class RentalServiceTest {
     @Test
     public void whenBorrowBookWIthValidInput_thenReturnRentalOutputDTO() {
         RentalInputDTO payload = new RentalInputDTO(1,1, LocalDate.now().plusWeeks(3));
-        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"ssn","email","firstname","lastname",
+        User user = new User(MEMBER,"ssn","email","lastname","city","password");
+        Author author = new Author("firstName","lastName");
+        Book book = new Book("title",author,"description","isbn");
+
+        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"email","firstname","lastname",
                 "streetname",1,"city","password");
 
         AuthorOutputDTO authorDTO = new AuthorOutputDTO(1,"firstname","lastname");
@@ -72,7 +76,11 @@ public class RentalServiceTest {
 
     @Test
     public void whenGetAllRentalsDTO_thenReturnListOfRentalOutputDTO() {
-        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"ssn","email","firstname","lastname",
+        User user = new User(MEMBER,"ssn","email","lastname","city","password");
+        Author author = new Author("firstName","lastName");
+        Book book = new Book("title",author,"description","isbn");
+
+        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"email","firstname","lastname",
                 "streetname",1,"city","password");
 
         AuthorOutputDTO authorDTO = new AuthorOutputDTO(1,"firstname","lastname");
@@ -94,7 +102,11 @@ public class RentalServiceTest {
 
     @Test
     public void whenGetAllRentalsFromUser_thenReturnListOfRentalOutputDTOFromInputUser() {
-        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"ssn","email","firstname","lastname",
+        User user = new User(MEMBER,"ssn","email","lastname","city","password");
+        Author author = new Author("firstName","lastName");
+        Book book = new Book("title",author,"description","isbn");
+
+        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"email","firstname","lastname",
                 "streetname",1,"city","password");
 
         AuthorOutputDTO authorDTO = new AuthorOutputDTO(1,"firstname","lastname");
@@ -153,7 +165,9 @@ public class RentalServiceTest {
 
     @Test
     public void whenGetAllRentalsOverDue_thenReturnListOfRentalOutputDTO() {
-        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"ssn","email","firstname","lastname",
+
+
+        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"email","firstname","lastname",
                 "streetname",1,"city","password");
 
         AuthorOutputDTO authorDTO = new AuthorOutputDTO(1,"firstname","lastname");
