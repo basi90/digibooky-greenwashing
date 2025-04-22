@@ -29,6 +29,8 @@ public class AuthorRepository {
     }
 
     public Optional<Author> getById(long id) {
+        System.out.println("Getting author by id: " + id);
+        System.out.println("Author: " + authors.get(id));
         return Optional.ofNullable(authors.get(id));
     }
 
