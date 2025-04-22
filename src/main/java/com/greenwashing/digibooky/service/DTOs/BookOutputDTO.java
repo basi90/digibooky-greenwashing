@@ -1,5 +1,7 @@
 package com.greenwashing.digibooky.service.DTOs;
 
+import java.util.Objects;
+
 public class BookOutputDTO {
     private long id;
     private String title;
@@ -33,5 +35,13 @@ public class BookOutputDTO {
 
     public String getIsbn() {
         return isbn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookOutputDTO that = (BookOutputDTO) o;
+        return id == that.id && Objects.equals(title, that.title) && Objects.equals(author, that.author)&& Objects.equals(description, that.description)&&Objects.equals(isbn, that.isbn);
     }
 }
