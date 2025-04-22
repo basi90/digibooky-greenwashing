@@ -43,7 +43,7 @@ public class BookController {
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public BookOutputDTO updateBook(@PathVariable long id, @RequestBody BookEnhancedDTO book) {
+    public BookOutputDTO updateBook(@PathVariable long id, @RequestBody BookInputDTO book) {
         return service.update(book, id);
     }
 

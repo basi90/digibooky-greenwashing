@@ -22,9 +22,11 @@ public class BookService {
     private AuthorRepository authorRepository;
 
     // CONSTRUCTOR
-    public BookService(BookRepository repository, BookMapper mapper) {
+    public BookService(BookRepository repository, BookMapper mapper, AuthorRepository authorRepository, AuthorMapper authorMapper) {
         this.repository = repository;
         this.mapper = mapper;
+        this.authorMapper = authorMapper;
+        this.authorRepository = authorRepository;
     }
 
     // METHODS
@@ -84,17 +86,14 @@ public class BookService {
         return mapper.bookToOutputDTO(book);
     }
     // update a book
-    public BookOutputDTO update(BookEnhancedDTO dto, long id) {
+    public BookOutputDTO update(BookInputDTO dto, long id) {
         Book book = repository.getById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
-        book.setId(dto.getId());
-        book.setAuthor(authorRepository.getById(dto.getId())
+        book.setAuthor(authorRepository.getById(dto.getAuthorId())
                 .orElseThrow(() -> new RuntimeException("Author not found")));
         book.setTitle(dto.getTitle());
         book.setDescription(dto.getDescription());
-        book.setIsbn(dto.getIsbn());
-        book.setRented(dto.isRented());
 
         return mapper.bookToOutputDTO(book);
     }
