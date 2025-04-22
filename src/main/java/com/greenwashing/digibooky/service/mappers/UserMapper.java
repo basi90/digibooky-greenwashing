@@ -26,7 +26,6 @@ public class UserMapper {
     public UserOutputDTO userToOutputDTO(User user) {
         return new UserOutputDTO(user.getId(),
                 user.getRole(),
-                user.getSsn(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),

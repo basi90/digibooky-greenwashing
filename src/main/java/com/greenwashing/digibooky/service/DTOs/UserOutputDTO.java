@@ -13,7 +13,7 @@ public class UserOutputDTO {
     private String city;
     private String postalCode;
 
-    public UserOutputDTO(long id, UserRole userRole, String ssn, String email, String firstName, String lastName, String streetName, int streetNumber, String city, String postalCode) {
+    public UserOutputDTO(long id, UserRole userRole, String email, String firstName, String lastName, String streetName, int streetNumber, String city, String postalCode) {
         this.id = id;
         this.role = userRole;
         this.email = email;

@@ -42,10 +42,10 @@ public class UserServiceTest {
         //ReflectionTestUtils.setField(user1, "id", 1); INCREDIBLY USEFUL!!!!!! NO SETTERS NEEDED
         //ReflectionTestUtils.setField(user2, "id", 2); INCREDIBLY USEFUL!!!!!! NO SETTERS NEEDED
 
-        UserOutputDTO userDTO1 = new UserOutputDTO(1, MEMBER,"ssn1","email1","name1",
+        UserOutputDTO userDTO1 = new UserOutputDTO(1, MEMBER , "email1","name1",
                 "lastname1","street1",1,"city1","postal1");
 
-        UserOutputDTO userDTO2 = new UserOutputDTO(2, MEMBER,"ssn2","email2","name2",
+        UserOutputDTO userDTO2 = new UserOutputDTO(2, MEMBER,"email2","name2",
                 "lastname2","street2",2,"city2","postal2");
 
         when(userRepository.getAll()).thenReturn(List.of(user1, user2));
@@ -70,7 +70,7 @@ public class UserServiceTest {
         //expected outcomes
         User user = new User(MEMBER,"ssn","email","name","lastname","password");
 
-        UserOutputDTO userOutputDTO = new UserOutputDTO(1, MEMBER,"ssn","email","name",
+        UserOutputDTO userOutputDTO = new UserOutputDTO(1, MEMBER,"email","name",
                 "lastname","street",1,"city","postalcode");
 
         // "set" expected outcomes
@@ -94,7 +94,7 @@ public class UserServiceTest {
 
         User librarianUser = new User(LIBRARIAN,"ssn","email","name","lastname","password");
 
-        UserOutputDTO userOutputDTO = new UserOutputDTO(1, LIBRARIAN,"ssn","email","name",
+        UserOutputDTO userOutputDTO = new UserOutputDTO(1, LIBRARIAN,"email","name",
                 "lastname","street",1,"city","postalcode");
 
         when(userMapper.inputDTOtoUser(payload)).thenReturn(librarianUser);
@@ -117,7 +117,7 @@ public class UserServiceTest {
 
         User adminUser = new User(ADMIN,"ssn","email","name","lastname","password");
 
-        UserOutputDTO userOutputDTO = new UserOutputDTO(1, ADMIN,"ssn","email","name",
+        UserOutputDTO userOutputDTO = new UserOutputDTO(1, ADMIN,"email","name",
                 "lastname","street",1,"city","postalcode");
 
         when(userMapper.inputDTOtoUser(payload)).thenReturn(adminUser);
