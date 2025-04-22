@@ -41,7 +41,7 @@ public class UserControllerTest {
         String adminAuth = basicAuth(ADMIN_EMAIL, ADMIN_PASS);
 
         // Register member
-        UserInputDTO memberDTO = new UserInputDTO(UserRole.MEMBER, "a", "x@y.z", "a","b","c",1,"Brussels", "e", "pass");
+        UserInputDTO memberDTO = new UserInputDTO(UserRole.MEMBER, "a2", "a@b.co", "a","b","c",1,"Brussels", "e", "pass");
 
         given()
                 .contentType(ContentType.JSON)
@@ -50,7 +50,7 @@ public class UserControllerTest {
                 .post("/users")
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("email", equalTo("x@y.z"))
+                .body("email", equalTo("a@b.co"))
                 .body("role", equalTo("MEMBER"));
 
         // Get all users as admin
@@ -69,7 +69,7 @@ public class UserControllerTest {
         //Default admin
         String adminAuth = basicAuth(ADMIN_EMAIL, ADMIN_PASS);
 
-        UserInputDTO librarianDTO = new UserInputDTO(UserRole.LIBRARIAN, "a", "lib@lib.com", "a", "b", "c", 1, "Brussels", "e", "pass");
+        UserInputDTO librarianDTO = new UserInputDTO(UserRole.LIBRARIAN, "a3", "lib@lib.com", "a", "b", "c", 1, "Brussels", "e", "pass");
         // Register Librarian with credentials
         given()
                 .contentType(ContentType.JSON)
@@ -97,7 +97,7 @@ public class UserControllerTest {
         //Default admin
         String adminAuth = basicAuth(ADMIN_EMAIL, ADMIN_PASS);
 
-        UserInputDTO adminDTO = new UserInputDTO(UserRole.ADMIN, "a", "admin@admin.com", "a", "b", "c", 1, "Brussels", "e", "admin");
+        UserInputDTO adminDTO = new UserInputDTO(UserRole.ADMIN, "a4", "admin2@admin.com", "a", "b", "c", 1, "Brussels", "e", "admin");
 
         given()
                 .contentType(ContentType.JSON)
@@ -107,7 +107,7 @@ public class UserControllerTest {
                 .post("/users")
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("email", equalTo("admin@admin.com"))
+                .body("email", equalTo("admin2@admin.com"))
                 .body("role", equalTo("ADMIN"));
 
         given()
