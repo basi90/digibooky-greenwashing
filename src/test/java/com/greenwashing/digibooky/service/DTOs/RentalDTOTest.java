@@ -42,7 +42,7 @@ public class RentalDTOTest {
         LocalDate returnDate = LocalDate.of(2025, 1, 10);
         AuthorOutputDTO authorDTO = new AuthorOutputDTO(1,"a", "b");
         BookOutputDTO bookDTO = new BookOutputDTO(1, "a", authorDTO, "b", "c");
-        UserOutputDTO userDTO = new UserOutputDTO(1, UserRole.MEMBER, "a", "x@y.z", "c", "d", "e", 1, "Brussels", "f");
+        UserOutputDTO userDTO = new UserOutputDTO(1, UserRole.MEMBER,  "x@y.z", "c", "d", "e", 1, "Brussels", "f");
 
         RentalOutputDTO outputDTO = new RentalOutputDTO(1, userDTO, bookDTO, returnDate);
 
@@ -52,7 +52,6 @@ public class RentalDTOTest {
                 "user":{
                     "id":1,
                     "role":"MEMBER",
-                    "ssn":"a",
                     "email":"x@y.z",
                     "firstName":"c",
                     "lastName":"d",

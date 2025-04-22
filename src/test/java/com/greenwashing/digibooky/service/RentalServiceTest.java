@@ -52,7 +52,7 @@ public class RentalServiceTest {
         Author author = new Author("firstName","lastName");
         Book book = new Book("title",author,"description","isbn");
 
-        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"ssn","email","firstname","lastname",
+        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"email","firstname","lastname",
                 "streetname",1,"city","password");
 
         AuthorOutputDTO authorDTO = new AuthorOutputDTO(1,"firstname","lastname");
@@ -81,7 +81,7 @@ public class RentalServiceTest {
         Author author = new Author("firstName","lastName");
         Book book = new Book("title",author,"description","isbn");
 
-        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"ssn","email","firstname","lastname",
+        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"email","firstname","lastname",
                 "streetname",1,"city","password");
 
         AuthorOutputDTO authorDTO = new AuthorOutputDTO(1,"firstname","lastname");
@@ -107,7 +107,7 @@ public class RentalServiceTest {
         Author author = new Author("firstName","lastName");
         Book book = new Book("title",author,"description","isbn");
 
-        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"ssn","email","firstname","lastname",
+        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"email","firstname","lastname",
                 "streetname",1,"city","password");
 
         AuthorOutputDTO authorDTO = new AuthorOutputDTO(1,"firstname","lastname");
@@ -134,7 +134,7 @@ public class RentalServiceTest {
         Author author = new Author("firstName","lastName");
         Book book = new Book("title",author,"description","isbn");
 
-        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"ssn","email","firstname","lastname",
+        UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"email","firstname","lastname",
                 "streetname",1,"city","password");
 
         AuthorOutputDTO authorDTO = new AuthorOutputDTO(1,"firstname","lastname");
