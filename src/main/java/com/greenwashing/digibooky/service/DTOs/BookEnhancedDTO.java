@@ -19,6 +19,8 @@ public class BookEnhancedDTO {
         this.author = author;
         this.description = description;
         this.isbn = isbn;
+        this.isRented = isRented;
+        this.user = user;
     }
 
     public long getId() {
