@@ -35,6 +35,17 @@ public class BookController {
         return service.getById(id);
     }
 
+    @GetMapping(path = "/search", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookOutputDTO> searchBooks(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String isbn,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName
+    ) {
+        return service.getBySearch(title, isbn, firstName, lastName);
+    }
+
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public BookOutputDTO createBook(@RequestBody BookInputDTO book) {
@@ -50,7 +61,8 @@ public class BookController {
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable long id) {
-        service.delete(id);
+        if (!service.delete(id)) {;
+            throw new RuntimeException("Book not found");
+        }
     }
-
 }

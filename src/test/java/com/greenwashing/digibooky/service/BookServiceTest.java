@@ -118,20 +118,26 @@ public class BookServiceTest {
     }
 
     @Test
-    void givenValidId_whenDeleteBook_thenBookIsDeleted() {
-        Author author = new Author("a", "b");
-        Book book = new Book("a", author, "description", "isbn");
-        long id = book.getId();
+    void givenValidId_whenDeleteBook_thenBookIsRemovedFromRepository() {
+        long bookId = 1L;
 
-        bookService.delete(id);
-        verify(bookRepository).delete(id);
+        when(bookRepository.delete(bookId)).thenReturn(true);
+
+        boolean result = bookService.delete(bookId);
+
+        assertThat(result).isTrue();
+        verify(bookRepository).delete(bookId);
     }
 
-    // Create custom exception
     @Test
-    void givenInvalidId_whenDeleteBook_thenThrowException() {
-        assertThrows(RuntimeException.class, () -> {
-            bookService.delete(-1);
-        });
+    void givenInvalidId_whenDeleteBook_thenReturnFalse() {
+        long invalidBookId = -1L;
+
+        when(bookRepository.delete(invalidBookId)).thenReturn(false);
+
+        boolean result = bookService.delete(invalidBookId);
+
+        assertThat(result).isFalse();
+        verify(bookRepository).delete(invalidBookId);
     }
 }

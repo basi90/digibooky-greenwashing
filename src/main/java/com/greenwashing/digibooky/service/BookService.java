@@ -3,7 +3,6 @@ package com.greenwashing.digibooky.service;
 import com.greenwashing.digibooky.domain.Book;
 import com.greenwashing.digibooky.infrastructure.AuthorRepository;
 import com.greenwashing.digibooky.infrastructure.BookRepository;
-import com.greenwashing.digibooky.service.DTOs.BookEnhancedDTO;
 import com.greenwashing.digibooky.service.DTOs.BookInputDTO;
 import com.greenwashing.digibooky.service.DTOs.BookOutputDTO;
 import com.greenwashing.digibooky.service.mappers.AuthorMapper;
@@ -11,6 +10,8 @@ import com.greenwashing.digibooky.service.mappers.BookMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -45,6 +46,46 @@ public class BookService {
     }
 
     // get book by ID (enhanced)
+
+    // Search Books
+    public List<BookOutputDTO> getBySearch(String title, String isbn, String firstName, String lastName) {
+        // prepare the search strings
+        String cleanedTitle = title != null ? title.trim() : null;
+        String cleanedIsbn = isbn != null ? isbn.trim() : null;
+        String cleanedFirstName = firstName != null ? firstName.trim() : null;
+        String cleanedLastName = lastName != null ? lastName.trim() : null;
+        // turn them into regex patterns
+        Pattern titlePattern = wildcardToPattern(cleanedTitle);
+        Pattern isbnPattern = wildcardToPattern(cleanedIsbn);
+        Pattern firstNamePattern = wildcardToPattern(cleanedFirstName);
+        Pattern lastNamePattern = wildcardToPattern(cleanedLastName);
+
+        return repository.getAll().stream()
+                .filter(book -> matches(titlePattern, book.getTitle()))
+                .filter(book -> matches(isbnPattern, book.getIsbn()))
+                .filter(book -> book.getAuthor() != null
+                        && matches(firstNamePattern, book.getAuthor().getFirstName()))
+                .filter(book -> book.getAuthor() != null
+                        && matches(lastNamePattern, book.getAuthor().getLastName()))
+                .map(mapper::bookToOutputDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    private Pattern wildcardToPattern(String input) {
+        if (input == null || input.isEmpty()) return null;
+        String regex = input
+                .replace(".", "\\.")
+                .replace("*", ".*")
+                .replace("?", ".");
+        return Pattern.compile("^" + regex + "$", Pattern.CASE_INSENSITIVE);
+    }
+
+    private boolean matches(Pattern pattern, String value) {
+        return pattern == null || (value != null && pattern.matcher(value).matches());
+    }
+
+    /*
     public BookOutputDTO getByIdEnhanced(long id) {
         // get the book matching the id from repo
             // if not present, handle error with custom exception
@@ -79,6 +120,8 @@ public class BookService {
         // return the list of dto
         return null;
     }
+    */
+
     // add new book
     public BookOutputDTO save(BookInputDTO dto) {
         Book book = mapper.inputDTOToBook(dto);
@@ -99,10 +142,11 @@ public class BookService {
     }
 
     // delete a book
-    public void delete(long id) {
+    public boolean delete(long id) {
         if (!repository.delete(id)) {;
-            throw new RuntimeException("Book not found");
+            return false;
         }
+        return true;
     }
 
 }
