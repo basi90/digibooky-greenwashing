@@ -68,7 +68,7 @@ public class RentalController   {
 
     private void authenticateLibrarian(String authHeader) {// I think it makes more sense to create a public method in authentication service? im not sure
         User user = authService.authenticate(authHeader);
-        if(user.getRole() != UserRole.LIBRARIAN || user.getRole() != UserRole.ADMIN) {
+        if(user.getRole() == UserRole.MEMBER) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Librarian or admin privileges required");
         }
     }
