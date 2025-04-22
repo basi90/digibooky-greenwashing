@@ -1,5 +1,7 @@
 package com.greenwashing.digibooky.service.DTOs;
 
+import java.util.Objects;
+
 public class AuthorOutputDTO {
     private long id;
     private String firstName;
@@ -21,5 +23,13 @@ public class AuthorOutputDTO {
 
     public String getLastName() {
         return lastName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthorOutputDTO that = (AuthorOutputDTO) o;
+        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
     }
 }
