@@ -7,7 +7,6 @@ import com.greenwashing.digibooky.infrastructure.RentalRepository;
 import com.greenwashing.digibooky.infrastructure.UserRepository;
 import com.greenwashing.digibooky.service.DTOs.*;
 import com.greenwashing.digibooky.service.mappers.RentalMapper;
-import com.greenwashing.digibooky.service.mappers.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,8 +26,9 @@ import static org.mockito.Mockito.when;
 public class RentalServiceTest {
 
     private static final UserRole MEMBER = UserRole.MEMBER;
-    private static final UserRole LIBRARIAN = UserRole.LIBRARIAN;
-    private static final UserRole ADMIN = UserRole.ADMIN;
+    User user = new User(MEMBER,"ssn","email","lastname","city","password");
+    Author author = new Author("firstName","lastName");
+    Book book = new Book("title",author,"description","isbn");
 
     @Mock
     private RentalMapper rentalMapper;
@@ -70,7 +70,6 @@ public class RentalServiceTest {
         verify(rentalMapper).inputDTOToRental(payload);
         verify(rentalRepository).save(rental);
         verify(rentalMapper).rentalToOutputDTO(rental);
-
 
         assertThat(result).isEqualTo(rentalDTO);
     }
@@ -114,25 +113,59 @@ public class RentalServiceTest {
         BookOutputDTO bookDTO = new BookOutputDTO(1,"title",authorDTO,"description","isbn");
 
         Rental rental = new Rental(user, book, LocalDate.now().plusWeeks(3));
+        long userId = user.getId();
         RentalOutputDTO rentalDTO = new RentalOutputDTO(1,userDTO,bookDTO,LocalDate.now().plusWeeks(3));
 
-        when(userRepository.getById(user.getId())).thenReturn(user);
+        when(userRepository.getById(userId)).thenReturn(user);
         when(rentalMapper.rentalToOutputDTO(rental)).thenReturn(rentalDTO);
         when(rentalRepository.getAll()).thenReturn(List.of(rental));
 
-        List<RentalOutputDTO> result = rentalService.getAllRentalsFromUser(1);
+        List<RentalOutputDTO> result = rentalService.getAllRentalsFromUser(userId);
 
-        verify(userRepository).getById(1);
+        verify(userRepository).getById(userId);
         verify(rentalMapper).rentalToOutputDTO(rental);
 
         assertThat(result).isEqualTo(List.of(rentalDTO));
     }
 
     @Test
+    public void givenRentalNotOverDueExists_whenReturnBook_thenReturnCorrectString(){
+        Rental rental = new Rental(user, book, LocalDate.now().plusWeeks(3));
+        long id = rental.getId();
+
+        when(rentalRepository.getById(id)).thenReturn(rental);
+
+        String result = rentalService.returnBook(id);
+
+        verify(rentalRepository).getById(id);
+        verify(rentalRepository).delete(rental);
+
+        assertThat(rentalService.getAllRentalsDTO()).isEmpty();
+        assertThat(book.isRented()).isFalse();
+        assertThat(result).isEqualTo("Rental with title title and id "+id+" was returned ");
+    }
+
+    @Test
+    public void givenRentalOverDueExists_whenReturnBook_thenReturnCorrectString(){
+        Rental rental = new Rental(user, book, LocalDate.now().minusDays(3));
+        long id = rental.getId();
+
+        when(rentalRepository.getById(id)).thenReturn(rental);
+
+        String result = rentalService.returnBook(id);
+
+        verify(rentalRepository).getById(id);
+        verify(rentalRepository).delete(rental);
+
+        assertThat(rentalService.getAllRentalsDTO()).isEmpty();
+        assertThat(book.isRented()).isFalse();
+        assertThat(result).isEqualTo("Rental with title title and id 1 was returned and was late, resulting in a fine");
+
+    }
+
+    @Test
     public void whenGetAllRentalsOverDue_thenReturnListOfRentalOutputDTO() {
-        User user = new User(MEMBER,"ssn","email","lastname","city","password");
-        Author author = new Author("firstName","lastName");
-        Book book = new Book("title",author,"description","isbn");
+
 
         UserOutputDTO userDTO = new UserOutputDTO(1,MEMBER,"email","firstname","lastname",
                 "streetname",1,"city","password");
@@ -154,5 +187,6 @@ public class RentalServiceTest {
 
         assertThat(result).isEqualTo(List.of(rentalDTO));
     }
+
 
 }

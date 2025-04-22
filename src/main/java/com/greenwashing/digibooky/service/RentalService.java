@@ -62,8 +62,8 @@ public class RentalService {
 
     //nice to have
     private String calculateFine (Rental rental) {
-        if(rental.getReturnDate().isAfter(LocalDate.now())) {
-            return "And was late, resulting in a fine";
+        if(rental.getReturnDate().isBefore(LocalDate.now())) {
+            return "and was late, resulting in a fine";
         }else{
             return "";
         }
@@ -73,6 +73,7 @@ public class RentalService {
     public String returnBook(long rentalId) {
         Rental rental = this.rentalRepository.getById(rentalId);
         Book book = rental.getBook();
+
         book.setRented(false);
         this.rentalRepository.delete(rental);
         return "Rental with title "+book.getTitle()+" and id "+rental.getId()+" was returned "+calculateFine(rental);
