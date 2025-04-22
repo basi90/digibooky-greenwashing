@@ -3,9 +3,7 @@ package com.greenwashing.digibooky.infrastructure;
 import com.greenwashing.digibooky.domain.Book;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class BookRepository {
@@ -41,6 +39,10 @@ public class BookRepository {
         return Optional.ofNullable(books.get(id));
     }
 
+    public List<Book> getAllDeleted() {
+        return new ArrayList<>(deleted.values());
+    }
+
     public Collection<Book> getAll() {
         return books.values();
     }
@@ -51,20 +53,20 @@ public class BookRepository {
         Book book1 = new Book(
                 "The Tao Te Ching",
                 authorRepository.getById(1).orElse(null),
-                "Philosophy",
-                "A classic text on Taoist philosophy."
+                "A classic text on Taoist philosophy.",
+                "9781234567897"
         );
         Book book2 = new Book(
                 "The Book of Five Rings",
                 authorRepository.getById(2).orElse(null),
-                "Martial Arts",
-                "A treatise on strategy and tactics."
+                "A treatise on strategy and tactics.",
+                "9781861978769"
         );
         Book book3 = new Book(
                 "The Zen Teachings of Ikkyu",
                 authorRepository.getById(3).orElse(null),
-                "Zen Buddhism",
-                "A collection of teachings from the Zen master Ikkyu."
+                "A collection of teachings from the Zen master Ikkyu.",
+                "9781402894626"
         );
 
         books.put(book1.getId(), book1);
