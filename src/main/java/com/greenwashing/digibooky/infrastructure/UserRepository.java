@@ -29,7 +29,33 @@ public class UserRepository {
                 "1040",
                 "admin"
         );
+        User librarian =  new User(
+                UserRole.LIBRARIAN,
+                "ssnlibrarian",
+                "librarian@librarian.com",
+                "librarian",
+                "librarian",
+                "street",
+                1,
+                "city",
+                "2000",
+                "librarian"
+        );
+        User member =  new User(
+                UserRole.MEMBER,
+                "ssnmember",
+                "member@member.com",
+                "member",
+                "member",
+                "street",
+                1,
+                "city",
+                "2000",
+                "member"
+        );
         users.put(admin.getId(), admin);
+        users.put(librarian.getId(), librarian);
+        users.put(member.getId(), member);
     }
 
     // METHODS

@@ -27,24 +27,24 @@ public class RentalController   {
 
     @PostMapping(produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Get all users", security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Borrow a book as a member", security = @SecurityRequirement(name = "basicAuth"))
     public RentalOutputDTO borrowBook(@RequestBody RentalInputDTO rentalInputDTO, @RequestHeader("Authorization") String authHeader) {
-        authenticateMember(authHeader);
+        authService.authenticate(authHeader);
         return this.rentalService.borrowBook(rentalInputDTO);
     }
 
     @DeleteMapping(path = "/{rentalId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all users", security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Return a book as a member", security = @SecurityRequirement(name = "basicAuth"))
     public String returnBook(@PathVariable long rentalId, @RequestHeader("Authorization") String authHeader) {
-        authenticateMember(authHeader);
+        authService.authenticate(authHeader);
         return this.rentalService.returnBook(rentalId);// returning a string doesn't really do anything on the website...
     }
 
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all users", security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Get all current rented books", security = @SecurityRequirement(name = "basicAuth"))
     public List<RentalOutputDTO> getAllRentals(@RequestHeader("Authorization") String authHeader) {
         authenticateLibrarian(authHeader);
         return this.rentalService.getAllRentalsDTO();
@@ -52,7 +52,7 @@ public class RentalController   {
 
     @GetMapping(path = "/{userId}",produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all users", security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Get all rentals of a given member", security = @SecurityRequirement(name = "basicAuth"))
     public List<RentalOutputDTO> getAllRentalsFromUser(@PathVariable long userId, @RequestHeader("Authorization") String authHeader) {
         authenticateLibrarian(authHeader);
         return this.rentalService.getAllRentalsFromUser(userId);
@@ -60,25 +60,17 @@ public class RentalController   {
 
     @GetMapping(path = "/overdue", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all users", security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Get all rentals that are overdue", security = @SecurityRequirement(name = "basicAuth"))
     public List<RentalOutputDTO> getAllRentalsOverdue( @RequestHeader("Authorization") String authHeader) {
         authenticateLibrarian(authHeader);
         return this.rentalService.getAllRentalsOverdue();
     }
 
-    private void authenticateLibrarian(String authHeader) {// i think it makes more sense to create a public method in authentication service? im not sure
+    private void authenticateLibrarian(String authHeader) {// I think it makes more sense to create a public method in authentication service? im not sure
         User user = authService.authenticate(authHeader);
-        if(user.getRole() != UserRole.LIBRARIAN) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Librarian privileges required");
+        if(user.getRole() != UserRole.LIBRARIAN || user.getRole() != UserRole.ADMIN) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Librarian or admin privileges required");
         }
     }
-
-    private void authenticateMember(String authHeader) {// i think it makes more sense to create a public method in authentication service? im not sure
-        User user = authService.authenticate(authHeader);
-        if(user.getRole() != UserRole.MEMBER) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Member privileges required, please create an account and log in");
-        }
-    }
-
 
 }
