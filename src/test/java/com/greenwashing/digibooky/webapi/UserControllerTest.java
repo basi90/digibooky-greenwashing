@@ -63,4 +63,59 @@ public class UserControllerTest {
                 .body("size()", greaterThanOrEqualTo(1))
                 .body("[0].email", notNullValue());
     }
+
+    @Test
+    void testRegisterLibrarianAsAdmin() {
+        //Default admin
+        String adminAuth = basicAuth(ADMIN_EMAIL, ADMIN_PASS);
+
+        UserInputDTO librarianDTO = new UserInputDTO(UserRole.LIBRARIAN, "a", "lib@lib.com", "a", "b", "c", 1, "Brussels", "e", "pass");
+        // Register Librarian with credentials
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", adminAuth)
+                .body(librarianDTO)
+                .when()
+                .post("/users")
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .body("email", equalTo("lib@lib.com"))
+                .body("role", equalTo("LIBRARIAN"));
+
+        // Register Librarian without credentials
+        given()
+                .contentType(ContentType.JSON)
+                .body(librarianDTO)
+                .when()
+                .post("/users")
+                .then()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @Test
+    void testRegisterAdminAsAdmin() {
+        //Default admin
+        String adminAuth = basicAuth(ADMIN_EMAIL, ADMIN_PASS);
+
+        UserInputDTO adminDTO = new UserInputDTO(UserRole.ADMIN, "a", "admin@admin.com", "a", "b", "c", 1, "Brussels", "e", "admin");
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", adminAuth)
+                .body(adminDTO)
+                .when()
+                .post("/users")
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .body("email", equalTo("admin@admin.com"))
+                .body("role", equalTo("ADMIN"));
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(adminDTO)
+                .when()
+                .post("/users")
+                .then()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
 }
