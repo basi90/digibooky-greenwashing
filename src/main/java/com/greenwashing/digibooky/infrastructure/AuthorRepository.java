@@ -38,7 +38,7 @@ public class AuthorRepository {
 
 
     // FILLER
-    private void populateAuthors () {
+    public void populateAuthors () {
         Author author1 = new Author("Lao", "Tse");
         Author author2 = new Author("Miyamoto", "Musashi");
         Author author3 = new Author("Ikkyu", "Sojun");
