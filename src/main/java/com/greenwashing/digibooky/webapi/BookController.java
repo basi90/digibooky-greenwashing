@@ -35,6 +35,13 @@ public class BookController {
         return service.getById(id);
     }
 
+    @GetMapping(path = "/{id}/enhanced", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public BookEnhancedDTO getBookByIdEnhanced(@PathVariable long id) {
+        return service.getByIdEnhanced(id);
+    }
+
+
     @GetMapping(path = "/search", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public List<BookOutputDTO> searchBooks(

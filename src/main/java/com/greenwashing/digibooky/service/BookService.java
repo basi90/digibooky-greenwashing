@@ -1,12 +1,17 @@
 package com.greenwashing.digibooky.service;
 
 import com.greenwashing.digibooky.domain.Book;
+import com.greenwashing.digibooky.domain.Rental;
 import com.greenwashing.digibooky.infrastructure.AuthorRepository;
 import com.greenwashing.digibooky.infrastructure.BookRepository;
+import com.greenwashing.digibooky.infrastructure.RentalRepository;
+import com.greenwashing.digibooky.service.DTOs.BookEnhancedDTO;
 import com.greenwashing.digibooky.service.DTOs.BookInputDTO;
 import com.greenwashing.digibooky.service.DTOs.BookOutputDTO;
+import com.greenwashing.digibooky.service.DTOs.UserOutputDTO;
 import com.greenwashing.digibooky.service.mappers.AuthorMapper;
 import com.greenwashing.digibooky.service.mappers.BookMapper;
+import com.greenwashing.digibooky.service.mappers.UserMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,13 +26,18 @@ public class BookService {
     private BookMapper mapper;
     private AuthorMapper authorMapper;
     private AuthorRepository authorRepository;
+    private RentalRepository rentalRepository;
+    private UserMapper userMapper;
 
     // CONSTRUCTOR
-    public BookService(BookRepository repository, BookMapper mapper, AuthorRepository authorRepository, AuthorMapper authorMapper) {
+    public BookService(BookRepository repository, BookMapper mapper, AuthorRepository authorRepository,
+                       AuthorMapper authorMapper, RentalRepository rentalRepository, UserMapper userMapper) {
         this.repository = repository;
         this.mapper = mapper;
         this.authorMapper = authorMapper;
         this.authorRepository = authorRepository;
+        this.rentalRepository = rentalRepository;
+        this.userMapper = userMapper;
     }
 
     // METHODS
@@ -46,6 +56,33 @@ public class BookService {
     }
 
     // get book by ID (enhanced)
+    // maybe should create a custom mapper for the BookEnhancedDTO
+    public BookEnhancedDTO getByIdEnhanced(long id) {
+        Book book = repository.getById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        BookEnhancedDTO dto = new BookEnhancedDTO(
+                book.getId(),
+                book.getTitle(),
+                authorMapper.authorToOutputDTO(book.getAuthor()),
+                book.getDescription(),
+                book.getIsbn(),
+                book.isRented(),
+                getRenter(book)
+        );
+
+        return dto;
+    }
+
+    private UserOutputDTO getRenter(Book book) {
+        if (book.isRented()) {
+            Rental rental = rentalRepository.getAll().stream()
+                    .filter(r -> r.getBook().getId() == book.getId())
+                    .findFirst()
+                    .orElse(null);
+            return rental != null ? userMapper.userToOutputDTO(rental.getUser()) : null;
+        }
+        return null;
+    }
 
     // Search Books
     public List<BookOutputDTO> getBySearch(String title, String isbn, String firstName, String lastName) {
