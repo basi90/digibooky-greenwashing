@@ -64,13 +64,13 @@ public class UserServiceTest {
     @Test
     void whenRegisterAsMember_thenReturnUserOutputDTOWithRoleMember() {
         //SETUP payload that determines outcomes
-        UserInputDTO payload = new UserInputDTO(MEMBER,"ssn","email","name","lastname",
+        UserInputDTO payload = new UserInputDTO(MEMBER,"ssn","a@b.co","name","lastname",
                 "street",1,"city","postalcode","password");
 
         //expected outcomes
-        User user = new User(MEMBER,"ssn","email","name","lastname","password");
+        User user = new User(MEMBER,"ssn","a@b.co","name","lastname","password");
 
-        UserOutputDTO userOutputDTO = new UserOutputDTO(1, MEMBER,"email","name",
+        UserOutputDTO userOutputDTO = new UserOutputDTO(1, MEMBER,"a@b.co","name",
                 "lastname","street",1,"city","postalcode");
 
         // "set" expected outcomes
@@ -89,12 +89,12 @@ public class UserServiceTest {
     @Test
     void whenRegisterLibrarian_thenReturnUserOutputDTOWithRoleLibrarian() {
 
-        UserInputDTO payload = new UserInputDTO(LIBRARIAN,"ssn","email","name","lastname",
+        UserInputDTO payload = new UserInputDTO(LIBRARIAN,"ssn","a@b.co","name","lastname",
                 "street",1,"city","postalcode","password");
 
-        User librarianUser = new User(LIBRARIAN,"ssn","email","name","lastname","password");
+        User librarianUser = new User(LIBRARIAN,"ssn","a@b.co","name","lastname","password");
 
-        UserOutputDTO userOutputDTO = new UserOutputDTO(1, LIBRARIAN,"email","name",
+        UserOutputDTO userOutputDTO = new UserOutputDTO(1, LIBRARIAN,"a@b.co","name",
                 "lastname","street",1,"city","postalcode");
 
         when(userMapper.inputDTOtoUser(payload)).thenReturn(librarianUser);
@@ -112,12 +112,12 @@ public class UserServiceTest {
     @Test
     void whenRegisterAdmin_thenReturnUserOutputDTOWithRoleAdmin() {
 
-        UserInputDTO payload = new UserInputDTO(ADMIN,"ssn","email","name","lastname",
+        UserInputDTO payload = new UserInputDTO(ADMIN,"ssn","a@b.co","name","lastname",
                 "street",1,"city","postalcode","password");
 
-        User adminUser = new User(ADMIN,"ssn","email","name","lastname","password");
+        User adminUser = new User(ADMIN,"ssn","a@b.co","name","lastname","password");
 
-        UserOutputDTO userOutputDTO = new UserOutputDTO(1, ADMIN,"email","name",
+        UserOutputDTO userOutputDTO = new UserOutputDTO(1, ADMIN,"a@b.co","name",
                 "lastname","street",1,"city","postalcode");
 
         when(userMapper.inputDTOtoUser(payload)).thenReturn(adminUser);
@@ -135,9 +135,9 @@ public class UserServiceTest {
     @Test
     void whenRegisterMemberWithIncorrectPayloadRole_thenThrowException() {
         //SETUP invalid payload that causes exception
-        UserInputDTO invalidPayload1 = new UserInputDTO(ADMIN,"ssn","email","name","lastname",
+        UserInputDTO invalidPayload1 = new UserInputDTO(ADMIN,"ssn","x@y.z","name","lastname",
                 "street",1,"city","postalcode","password");
-        UserInputDTO invalidPayload2 = new UserInputDTO(LIBRARIAN,"ssn","email","name","lastname",
+        UserInputDTO invalidPayload2 = new UserInputDTO(LIBRARIAN,"ssn","x@y.z","name","lastname",
                 "street",1,"city","postalcode","password");
 
         assertThatThrownBy(() -> userService.registerAsMember(invalidPayload1)).isInstanceOf(IllegalArgumentException.class);
@@ -146,9 +146,9 @@ public class UserServiceTest {
 
     @Test
     void whenRegisterLibrarianWithIncorrectPayloadRole_thenThrowException() {
-        UserInputDTO invalidPayload1 = new UserInputDTO(ADMIN,"ssn","email","name","lastname",
+        UserInputDTO invalidPayload1 = new UserInputDTO(ADMIN,"ssn","x@y.z","name","lastname",
                 "street",1,"city","postalcode","password");
-        UserInputDTO invalidPayload2 = new UserInputDTO(MEMBER,"ssn","email","name","lastname",
+        UserInputDTO invalidPayload2 = new UserInputDTO(MEMBER,"ssn","x@y.z","name","lastname",
                 "street",1,"city","postalcode","password");
 
         assertThatThrownBy(() -> userService.registerLibrarian(invalidPayload1)).isInstanceOf(IllegalArgumentException.class);
@@ -157,9 +157,9 @@ public class UserServiceTest {
 
     @Test
     void whenRegisterAdminWithIncorrectPayloadRole_thenThrowException() {
-        UserInputDTO invalidPayload1 = new UserInputDTO(MEMBER,"ssn","email","name","lastname",
+        UserInputDTO invalidPayload1 = new UserInputDTO(MEMBER,"ssn","x@y.z","name","lastname",
                 "street",1,"city","postalcode","password");
-        UserInputDTO invalidPayload2 = new UserInputDTO(LIBRARIAN,"ssn","email","name","lastname",
+        UserInputDTO invalidPayload2 = new UserInputDTO(LIBRARIAN,"ssn","x@y.z","name","lastname",
                 "street",1,"city","postalcode","password");
 
         assertThatThrownBy(() -> userService.registerAdmin(invalidPayload1)).isInstanceOf(IllegalArgumentException.class);
