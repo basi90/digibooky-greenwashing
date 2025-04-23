@@ -8,7 +8,7 @@ public class BookEnhancedDTO {
     private AuthorOutputDTO author;
     private String description;
     private String isbn;
-    private boolean isRented;
+    private String isRented;
     private UserOutputDTO user;
 
     public BookEnhancedDTO(long id, String title, AuthorOutputDTO author,
@@ -19,7 +19,7 @@ public class BookEnhancedDTO {
         this.author = author;
         this.description = description;
         this.isbn = isbn;
-        this.isRented = isRented;
+        this.isRented = isRented ? "Yes" : "No";
         this.user = user;
     }
 
@@ -43,7 +43,7 @@ public class BookEnhancedDTO {
         return isbn;
     }
 
-    public boolean isRented() {
+    public String getIsRented() {
         return isRented;
     }
 

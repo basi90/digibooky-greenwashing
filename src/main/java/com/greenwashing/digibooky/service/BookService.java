@@ -56,6 +56,7 @@ public class BookService {
     }
 
     // get book by ID (enhanced)
+    // maybe should create a custom mapper for the BookEnhancedDTO
     public BookEnhancedDTO getByIdEnhanced(long id) {
         Book book = repository.getById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));

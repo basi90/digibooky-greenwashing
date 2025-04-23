@@ -22,6 +22,8 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.*;
 
+
+// Those integration tests relies on the hard-coded data in the repositories.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BookControllerTest {
 
@@ -41,10 +43,6 @@ public class BookControllerTest {
 
     @Test
     void testCreateNewBook() {
-
-        System.out.println(bookRepository.getAll());
-        System.out.println(authorRepository.getAll());
-        System.out.println(authorRepository.getById(1L));
 
         BookInputDTO inputDTO = new BookInputDTO(
                 "The Great Gatsby",
@@ -66,5 +64,91 @@ public class BookControllerTest {
 
     }
 
+    @Test
+    void testGetAllBooks() {
+        when()
+                .get("/books")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("size()", greaterThanOrEqualTo(3))
+                .body("[0].title", notNullValue())
+                .body("[0].author.id", notNullValue())
+                .body("[0].isbn", notNullValue());
+    }
+
+    @Test
+    void testGetBookById() {
+        when()
+                .get("/books/1")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("title", equalTo("The Tao Te Ching"))
+                .body("author.id", equalTo(1))
+                .body("isbn", equalTo("9781234567897"))
+                .body("author.firstName", equalTo("Lao"))
+                .body("author.lastName", equalTo("Tse"));
+    }
+
+    @Test
+    void testGetBookByIdEnhanced() {
+        when()
+                .get("/books/1/enhanced")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("title", equalTo("The Tao Te Ching"))
+                .body("author.id", equalTo(1))
+                .body("isbn", equalTo("9781234567897"))
+                .body("author.firstName", equalTo("Lao"))
+                .body("author.lastName", equalTo("Tse"))
+                .body("isRented", equalTo("No"));
+    }
+
+    @Test
+    void testSearchBookFullTitle() {
+        when()
+                .get("/books/search?title=The Tao Te Ching")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("size()", equalTo(1))
+                .body("[0].title", equalTo("The Tao Te Ching"))
+                .body("[0].author.id", equalTo(1))
+                .body("[0].isbn", equalTo("9781234567897"));
+    }
+
+    @Test
+    void testSearchBookPartialTitle() {
+        when()
+                .get("/books/search?title=*Tao*")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("size()", greaterThanOrEqualTo(1))
+                .body("[0].title", equalTo("The Tao Te Ching"))
+                .body("[0].author.id", equalTo(1))
+                .body("[0].isbn", equalTo("9781234567897"));
+    }
+
+    @Test
+    void testSearchBookFullAuthor() {
+        when()
+                .get("/books/search?firstName=Lao&lastName=Tse")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("size()", equalTo(1))
+                .body("[0].title", equalTo("The Tao Te Ching"))
+                .body("[0].author.id", equalTo(1))
+                .body("[0].isbn", equalTo("9781234567897"));
+    }
+
+    @Test
+    void testSearchPartialISBN() {
+        when()
+                .get("/books/search?isbn=*7*23*")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("size()", greaterThanOrEqualTo(1))
+                .body("[0].title", equalTo("The Tao Te Ching"))
+                .body("[0].author.id", equalTo(1))
+                .body("[0].isbn", equalTo("9781234567897"));
+    }
 }
 
