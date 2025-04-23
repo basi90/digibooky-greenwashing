@@ -50,7 +50,7 @@ public class RentalController   {
         return this.rentalService.getAllRentalsDTO();
     }
 
-    @GetMapping(path = "/{userId}",produces = "application/json")
+    @GetMapping(path = "/users/{userId}",produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all rentals of a given member", security = @SecurityRequirement(name = "basicAuth"))
     public List<RentalOutputDTO> getAllRentalsFromUser(@PathVariable long userId, @RequestHeader("Authorization") String authHeader) {
